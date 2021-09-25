@@ -10,22 +10,23 @@
     <meta property="og:description" content="하지만 디자인 수정은 없다.">
     <meta property="og:image" content="images/ogimage.png">
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>디자인 수정 요청 곤란합니다</title>
     <script src="index.js"></script>
     <link rel="stylesheet" href="style.css">
-
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic:wght@800&display=swap" rel="stylesheet">
 </head>
 <body>
-    <div class="container">
+    <div class="container" >
+        <a href="index.html">
         <div class="typing animate"></div>
+        </a>
     </div>
-
-
+    <div class="wrap-box">
+    <button type="button" class="text-right-mb-1 btn btn-secondary" onclick="postingDisplay()">글쓰기</button>
+    </div>
     <div class="wrap-card-box">
-        <button type="button" class="text-right-mb-1 btn btn-secondary" onclick="postingDisplay()">글쓰기</button>
-    </div>
-        <div class="wrap-card-box">
-
 
 <!--    인풋-->
     <div id = "posting-box" class="row g-2 card-container hide">
@@ -33,12 +34,12 @@
         <div class="col-sm-9">
             <input id="title" type="text" class="form-control" placeholder="제목" aria-label="제목">
         </div>
-        <div class="col-sm">
-            <input id="nickname" type="text" class="form-control" placeholder="닉네임" aria-label="닉네임">
-        </div>
-        <div class="form-floating">
+                <div class="form-floating">
             <textarea id="contents" class="form-control" placeholder="Leave a comment here"  style="height: 100px"></textarea>
             <label for="contents">게시글</label>
+        </div>
+        <div class="col-sm">
+            <input id="nickname" type="text" class="form-control" placeholder="닉네임" aria-label="닉네임">
         </div>
         <button type="button" class="my-btn btn btn-outline-secondary" onclick="saveMyPosting()">저장</button>
     </div>

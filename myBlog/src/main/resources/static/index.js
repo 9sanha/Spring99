@@ -7,6 +7,7 @@ $(document).ready(function (){
 
 
 function postingDisplay(){
+    $('#card-box').empty();
     $(".hide").css("display","block")
 }
 
@@ -21,9 +22,7 @@ function getPostingList(){
                 //console.log(response[i]);
                 let itemDto = response[i];
                 console.log(itemDto.createAt);
-                let year = itemDto.createdAt.substring(0,4)
-                let month = itemDto.createdAt.substring(5,7)
-                let day = itemDto.createdAt.substring(8,10)
+
                 //let time = itemDto.createdAt.substring(11,)
                 let tempHtml = addHTML(itemDto);
                 $('#card-box').append(tempHtml);
@@ -35,6 +34,13 @@ function getPostingList(){
 
 //포스트 card html 리턴
 function addHTML(itemDto){
+    let year = itemDto.createdAt.substring(0,4)
+    let month = itemDto.createdAt.substring(5,7)
+    let day = itemDto.createdAt.substring(8,10)
+    let time = itemDto.createdAt.substring(11,13)
+    let minute = itemDto.createdAt.substring(14,16)
+    let second = itemDto.createdAt.substring(17,21)
+
     return `<!--게시글-->
                 <div class="card-header">
                     ${itemDto.nickname}
@@ -42,7 +48,8 @@ function addHTML(itemDto){
                 <div class="card-body">
                     <blockquote class="blockquote mb-0">
                         <p>${itemDto.title}</p>
-                        <footer class="blockquote-footer">이 글은<cite title="Source Title">`${year}`년 sas${month}월${day}일 </cite>에 작성되었습니다.</footer>
+                        <p>이 글은<cite title="Source Title">${year}년 ${month}월 ${day}일 ${time}시 ${minute}분 ${second}초</cite>에 작성되었습니다.</p>
+                        
                     </blockquote>
                 </div>
                 <!-- Button trigger modal -->
@@ -60,7 +67,12 @@ function detail(id) {
         type: 'GET',
         url: `/api/detail/${id}`,
         success: function (response) {
-            console.log(response)
+            let year = response.createdAt.substring(0,4)
+            let month = response.createdAt.substring(5,7)
+            let day = response.createdAt.substring(8,10)
+            let time = response.createdAt.substring(11,13)
+            let minute = response.createdAt.substring(14,16)
+            let second = response.createdAt.substring(17,21)
 
             let tempHtml = `<div class="card">
   <div class="card-header">
@@ -70,7 +82,7 @@ function detail(id) {
     <blockquote class="blockquote mb-0">
       <p>${response.title}</p>
       <p>${response.contents}</p>
-      <footer class="blockquote-footer">이 글은<cite title="Source Title">${response.createdAt}</cite>에 작성되었습니다.</footer>
+      <p>이 글은<cite title="Source Title">${year}년 ${month}월 ${day}일 ${time}시 ${minute}분 ${second}초</cite>에 작성되었습니다.</p>
     </blockquote>
     <button onclick="window.location.reload()" type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
   뒤로 가기
@@ -91,6 +103,13 @@ function saveMyPosting(){
     let title = $('#title').val();
     let contents = $('#contents').val();
     let nickname = $('#nickname').val();
+    if(title===''){
+        return alert('제목을 입력해주세요!');
+    }else if (contents===''){
+        return alert('본문을 입력해주세요!');
+    }else if (nickname===''){
+        return alert('닉네임을 입력해주세요!');
+    }
     console.log(nickname)
     $.ajax({
         type: "POST",
@@ -98,11 +117,13 @@ function saveMyPosting(){
         contentType: "application/json",
         data: JSON.stringify({title:title,contents:contents,nickname:nickname}),
         success: function (response) {
-            alert('가능')
-            // 2. 응답 함수에서 modal을 뜨게 하고, targetId 를 reponse.id 로 설정 (숙제로 myprice 설정하기 위함)
-            $('#container').addClass('active');
-            targetId = response.id;
-            $(".hide").css("display","none")
+            if(response){
+                alert('게시물이 등록되었습니다.');
+                $('#container').addClass('active');
+                $(".hide").css("display","none")
+            }else{
+                alert(' ^  ㅗ  ^ ');
+            }
             window.location.reload()
         }
     })
