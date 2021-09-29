@@ -46,8 +46,6 @@ public class MyBlogRestController {
 
     @GetMapping("/api/detail/{id}")
     public Optional<MyBlog> getPostingDetail(@PathVariable Long id){
-
-
         return myBlogRepository.findById(id);
     }
 }
