@@ -4,6 +4,7 @@ import com.sparta.springcore.models.Product;
 import com.sparta.springcore.models.ProductMypriceRequestDto;
 import com.sparta.springcore.models.ProductRepository;
 import com.sparta.springcore.models.ProductRequestDto;
+import org.springframework.stereotype.Service;
 
 import java.sql.*;
 
@@ -12,7 +13,7 @@ import java.util.List;
 
 import java.sql.SQLException;
 import java.util.List;
-
+@Service
 public class ProductService {
 
     private final ProductRepository productRepository;
@@ -49,9 +50,8 @@ public class ProductService {
 
     //전체 상품 가져오기
     public List<Product> getProducts() throws SQLException {
-        List<Product> products = productRepository.getProducts();
 
-        return products;
+        return productRepository.getProducts();
     }
 }
 

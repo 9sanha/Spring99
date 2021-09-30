@@ -1,10 +1,12 @@
 package com.sparta.week04.models;
 
+import com.sparta.week04.dto.ItemDto;
+import com.sparta.week04.dto.ProductMypriceRequestDto;
+import com.sparta.week04.dto.ProductRequestDto;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import javax.transaction.Transactional;
 
 @Getter // get 함수를 일괄적으로 만들어줍니다.
 @NoArgsConstructor // 기본 생성자를 만들어줍니다.

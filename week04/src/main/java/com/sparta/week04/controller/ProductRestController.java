@@ -2,16 +2,14 @@ package com.sparta.week04.controller;
 
 import com.sparta.week04.models.Product;
 
-import com.sparta.week04.models.ProductMypriceRequestDto;
-import com.sparta.week04.models.ProductRepository;
+import com.sparta.week04.dto.ProductMypriceRequestDto;
+import com.sparta.week04.repository.ProductRepository;
 
-import com.sparta.week04.models.ProductRequestDto;
+import com.sparta.week04.dto.ProductRequestDto;
 import com.sparta.week04.service.ProductService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.aop.scope.ScopedProxyUtils;
 import org.springframework.web.bind.annotation.*;
 
-import javax.swing.plaf.IconUIResource;
 import java.util.List;
 
 @RequiredArgsConstructor // final로 선언된 멤버 변수를 자동으로 생성합니다.
