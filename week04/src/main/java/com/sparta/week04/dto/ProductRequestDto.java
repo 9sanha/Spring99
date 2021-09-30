@@ -7,6 +7,7 @@ public class ProductRequestDto {
     private String title;
     private String link;
     private String image;
+    private String userId;
     private int lprice;
     private int myprice;
 }
