@@ -3,8 +3,10 @@ package com.sparta.week04.controller;
 import com.sparta.week04.models.Product;
 import com.sparta.week04.dto.ProductMypriceRequestDto;
 import com.sparta.week04.dto.ProductRequestDto;
+import com.sparta.week04.models.UserRoleEnum;
 import com.sparta.week04.security.UserDetailsImpl;
 import com.sparta.week04.service.ProductService;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,5 +52,12 @@ public class ProductController {
         Long userId = userDetails.getUser().getId();
 
         return productService.getProducts(userId);
+    }
+
+    // 모든 회원이 등록한 관심 상품 조회
+    @Secured(UserRoleEnum.Authority.ADMIN)// 관리자 권한 부여
+    @GetMapping("/api/admin/products")
+    public List<Product> getAllProducts() {
+        return productService.getAllProducts();
     }
 }

@@ -1,12 +1,15 @@
 package com.sparta.week04.security;
 
 
+
 import com.sparta.week04.models.User;
+import com.sparta.week04.models.UserRoleEnum;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 
 public class UserDetailsImpl implements UserDetails {
 
@@ -52,6 +55,13 @@ public class UserDetailsImpl implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return Collections.emptyList();
+        UserRoleEnum userRole = user.getRole();
+        String authority = userRole.getAuthority();
+        //SimpleGrantedAuthority "ROLE_"형식 써야 함
+        SimpleGrantedAuthority simpleAuthority = new SimpleGrantedAuthority(authority);
+        Collection<GrantedAuthority> authorities = new ArrayList<>();
+        authorities.add(simpleAuthority);
+
+        return authorities;
     }
 }

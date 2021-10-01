@@ -37,10 +37,24 @@ public class User {
     @Enumerated(value = EnumType.STRING)
     private UserRoleEnum role;
 
+
+    @Column(unique = true)
+    private Long kakaoId;
+
+    //일반 form 로그인 사용자
     public User(String username, String password, String email, UserRoleEnum role) {
         this.username = username;
         this.password = password;
         this.email = email;
         this.role = role;
+        this.kakaoId = null;
+    }
+    //카카오 로그인 사용자
+    public User(String username, String email, String password, Long kakaoId) {
+        this.username = username;
+        this.password = password;
+        this.email = email;
+        this.role = UserRoleEnum.USER;
+        this.kakaoId = null;
     }
 }

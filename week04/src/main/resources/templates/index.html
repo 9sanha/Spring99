@@ -61,6 +61,8 @@
             <button class="cta" onclick="setMyprice()">설정하기</button>
         </div>
     </div>
+<!--  admin_role이 있는 경우에만 실행하겠땅  -->
 </div>
+<div th:if = "${admin_role}" id = "admin"></div>
 </body>
 </html>
