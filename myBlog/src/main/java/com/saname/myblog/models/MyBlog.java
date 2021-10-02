@@ -1,5 +1,6 @@
 package com.saname.myblog.models;
 
+import com.saname.myblog.dto.MyBlogDto;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 

@@ -1,8 +1,7 @@
 package com.saname.myblog.sevice;
 
-import com.saname.myblog.models.MyBlog;
-import com.saname.myblog.models.MyBlogDto;
-import com.saname.myblog.models.MyBlogRepository;
+import com.saname.myblog.dto.MyBlogDto;
+import com.saname.myblog.repository.MyBlogRepository;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

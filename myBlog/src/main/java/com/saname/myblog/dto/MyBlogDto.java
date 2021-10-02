@@ -1,4 +1,4 @@
-package com.saname.myblog.models;
+package com.saname.myblog.dto;
 
 import lombok.Getter;
 

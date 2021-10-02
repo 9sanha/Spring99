@@ -1,8 +1,8 @@
 package com.saname.myblog.controller;
 
 import com.saname.myblog.models.MyBlog;
-import com.saname.myblog.models.MyBlogDto;
-import com.saname.myblog.models.MyBlogRepository;
+import com.saname.myblog.dto.MyBlogDto;
+import com.saname.myblog.repository.MyBlogRepository;
 import com.saname.myblog.sevice.MyBlogService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;

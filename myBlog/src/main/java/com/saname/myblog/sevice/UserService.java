@@ -1,10 +1,9 @@
-package com.sparta.week04.service;
+package com.saname.myblog.sevice;
 
-
-import com.sparta.week04.dto.SignupRequestDto;
-import com.sparta.week04.models.User;
-import com.sparta.week04.models.UserRoleEnum;
-import com.sparta.week04.repository.UserRepository;
+import com.saname.myblog.dto.SignupRequestDto;
+import com.saname.myblog.models.User;
+import com.saname.myblog.models.UserRoleEnum;
+import com.saname.myblog.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -44,7 +43,7 @@ public class UserService {
             role = UserRoleEnum.ADMIN;
         }
 
-        User user = new User(username, password, email, role);
+        User user = new User(username, password, role);
         userRepository.save(user);
         return user;
     }
