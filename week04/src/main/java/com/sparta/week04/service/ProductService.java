@@ -1,6 +1,5 @@
 package com.sparta.week04.service;
 
-
 import com.sparta.week04.dto.ProductMypriceRequestDto;
 import com.sparta.week04.dto.ProductRequestDto;
 import com.sparta.week04.models.Product;
@@ -14,6 +13,8 @@ import java.util.List;
 public class ProductService {
 
     private final ProductRepository productRepository;
+    //입력할 수 있는 최저가 범위
+    public static final int MIN_MY_PRICE = 100;
 
     @Autowired
     public ProductService(ProductRepository productRepository) {
@@ -30,10 +31,14 @@ public class ProductService {
     }
 
     public Product updateProduct(Long id, ProductMypriceRequestDto requestDto) {
+        int myprice = requestDto.getMyprice();
+        if (myprice < MIN_MY_PRICE) {
+            throw new IllegalArgumentException("유효하지 않은 관심 가격입니다. 최소 " + MIN_MY_PRICE + " 원 이상으로 설정해 주세요.");
+        }
+
         Product product = productRepository.findById(id)
                 .orElseThrow(() -> new NullPointerException("해당 아이디가 존재하지 않습니다."));
 
-        int myprice = requestDto.getMyprice();
         product.setMyprice(myprice);
         productRepository.save(product);
 
@@ -45,8 +50,8 @@ public class ProductService {
         return productRepository.findAllByUserId(userId);
     }
 
-    //관리자용 상품 전체 조회회
-   public List<Product> getAllProducts() {
+    // (관리자용) 상품 전체 조회
+    public List<Product> getAllProducts() {
         return productRepository.findAll();
     }
 }
