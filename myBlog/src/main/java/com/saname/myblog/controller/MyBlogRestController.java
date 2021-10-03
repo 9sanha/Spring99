@@ -22,7 +22,7 @@ public class MyBlogRestController {
 
     @GetMapping("/api/post")
     public List<MyBlog> getPost(){
-        //날짜순 정렬 구현 필요
+
         List<MyBlog> listblog = myBlogRepository.findAll();
         Comparator<MyBlog> compare = Comparator
                 .comparing(MyBlog::getCreatedAt).reversed();
