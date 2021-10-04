@@ -34,6 +34,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http.authorizeRequests()
 // image 폴더를 login 없이 허용
                 .antMatchers("/images/**").permitAll()
+                // static 폴더를 login 없이 허용
+                .antMatchers("/static/**").permitAll()
 // css 폴더를 login 없이 허용
                 .antMatchers("/css/**").permitAll()
 // 회원 관리 처리 API 전부를 login 없이 허용

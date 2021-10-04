@@ -26,7 +26,7 @@ public class UserController {
     }
 
     //아이디 중복 확인
-    @GetMapping("api/checkId/{username}")
+    @GetMapping("user/checkId/{username}")
     public boolean checkId(@PathVariable String username ){
         //아이디가 중복 되지 않으면 true / 중복되면 false
         return userService.userIdCheck(username);

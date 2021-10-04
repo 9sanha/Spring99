@@ -25,6 +25,7 @@ public class UserService {
 
     public boolean userIdCheck(String username){
         Optional<User> user = userRepository.findByUsername(username);
+        System.out.println("여기까지는 들어오니//?"); // 안들어옴
         if (user.equals(null)){
             return true;
         }
