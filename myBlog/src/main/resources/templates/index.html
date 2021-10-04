@@ -12,7 +12,7 @@
     <meta charset="UTF-8">
     <title>디자인 수정 요청 곤란합니다</title>
     <script src="index.js"></script>
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="../static/css/style.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic:wght@800&display=swap" rel="stylesheet">
@@ -24,8 +24,9 @@
         </a>
     </div>
     <div class="wrap-box">
+        <div class="text-left" th:text="${username}" >님 어서오심셔</div>
     <button type="button" class="text-right-mb-1 btn btn-secondary" onclick="postingDisplay()">글쓰기</button>
-        <button type="button" class="text-right-mb-1 btn btn-secondary" onclick="location.href='login.html'">로그인</button>
+        <button type="button" class="text-right-mb-1 btn btn-secondary" onclick="location.href='/user/login'">로그인</button>
     </div>
     <div class="wrap-card-box">
 
@@ -39,9 +40,7 @@
             <textarea id="contents" class="form-control" placeholder="Leave a comment here"  style="height: 100px"></textarea>
             <label for="contents">게시글</label>
         </div>
-        <div class="col-sm">
-            <input id="nickname" type="text" class="form-control" placeholder="닉네임" aria-label="닉네임">
-        </div>
+
         <button type="button" class="my-btn btn btn-outline-secondary" onclick="saveMyPosting()">저장</button>
     </div>
             <div id="card-box" class="card-container">

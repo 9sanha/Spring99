@@ -32,7 +32,7 @@ public class MyBlogRestController {
         return sortedList;
     }
 
-    //public void savePost(@RequestBody String title,@RequestBody String contents,@RequestBody String nickname){
+
     @PostMapping("/api/post")
     public Boolean savePost(@RequestBody MyBlogDto requestDto){ //뇌피셜
         if(myBlogService.filter(requestDto)){
@@ -47,5 +47,10 @@ public class MyBlogRestController {
     @GetMapping("/api/detail/{id}")
     public Optional<MyBlog> getPostingDetail(@PathVariable Long id){
         return myBlogRepository.findById(id);
+    }
+
+    @DeleteMapping("/api/detail/{id}")
+    public void deletePostingComment(@PathVariable Long id){
+        myBlogRepository.deleteById(id);
     }
 }
