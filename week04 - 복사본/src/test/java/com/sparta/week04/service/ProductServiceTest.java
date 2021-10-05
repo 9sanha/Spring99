@@ -1,10 +1,6 @@
 package com.sparta.week04.service;
 
 
-import com.sparta.week04.dto.ProductMypriceRequestDto;
-import com.sparta.week04.dto.ProductRequestDto;
-import com.sparta.week04.models.Product;
-import com.sparta.week04.repository.ProductRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

@@ -1,7 +1,6 @@
 package com.sparta.week04.models;
 
 
-import com.sparta.week04.dto.ProductRequestDto;
 import org.junit.jupiter.api.*;
 
 import static org.junit.jupiter.api.Assertions.*;

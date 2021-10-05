@@ -1,13 +1,9 @@
 package com.sparta.week04.integration;
 
 
-import com.sparta.week04.dto.ProductMypriceRequestDto;
-import com.sparta.week04.dto.ProductRequestDto;
 import com.sparta.week04.dto.SignupRequestDto;
-import com.sparta.week04.models.Product;
 import com.sparta.week04.models.User;
 import com.sparta.week04.models.UserRoleEnum;
-import com.sparta.week04.service.ProductService;
 import com.sparta.week04.service.UserService;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;

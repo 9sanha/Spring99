@@ -2,15 +2,12 @@ package com.sparta.week04.mvc;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import com.sparta.week04.controller.ProductController;
 import com.sparta.week04.controller.UserController;
-import com.sparta.week04.dto.ProductRequestDto;
 import com.sparta.week04.models.User;
 import com.sparta.week04.models.UserRoleEnum;
 import com.sparta.week04.security.UserDetailsImpl;
 import com.sparta.week04.security.WebSecurityConfig;
 import com.sparta.week04.service.KakaoUserService;
-import com.sparta.week04.service.ProductService;
 import com.sparta.week04.service.UserService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;

@@ -1,15 +1,9 @@
 package com.sparta.week04.integration;
 
 
-import com.sparta.week04.dto.ProductMypriceRequestDto;
-import com.sparta.week04.dto.ProductRequestDto;
-import com.sparta.week04.models.Product;
-import com.sparta.week04.service.ProductService;
 import org.junit.jupiter.api.*;
-import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.web.WebAppConfiguration;
 
 import java.util.List;
 

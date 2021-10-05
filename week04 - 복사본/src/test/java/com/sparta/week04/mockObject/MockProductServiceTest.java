@@ -1,9 +1,6 @@
 package com.sparta.week04.mockObject;
 
 
-import com.sparta.week04.dto.ProductMypriceRequestDto;
-import com.sparta.week04.dto.ProductRequestDto;
-import com.sparta.week04.models.Product;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
