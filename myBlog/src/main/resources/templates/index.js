@@ -25,7 +25,7 @@ function getPostingList(){
 
                 //let time = itemDto.createdAt.substring(11,)
                 let tempHtml = addHTML(itemDto);
-                $('#card-box').append(tempHtml);
+                $('#card-box').append(tempHtml)
             }
 
         }
