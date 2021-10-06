@@ -7,7 +7,6 @@ import com.sparta.week04.dto.KakaoUserInfoDto;
 import com.sparta.week04.models.User;
 import com.sparta.week04.models.UserRoleEnum;
 import com.sparta.week04.repository.UserRepository;
-import com.sparta.week04.security.UserDetailsImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -122,7 +121,7 @@ public class KakaoUserService {
                 String email = kakaoUserInfo.getEmail();
                 // role: 일반 사용자
                 UserRoleEnum role = UserRoleEnum.USER;
-                kakaoUser = new User(nickname, email,encodedPassword, kakaoId);
+                kakaoUser = new User(nickname, email,encodedPassword,role, kakaoId);
                 userRepository.save(kakaoUser);
             }else{
                 userInfo.setKakaoId(kakaoId);

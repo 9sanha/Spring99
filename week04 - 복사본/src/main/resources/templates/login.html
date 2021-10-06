@@ -14,7 +14,7 @@
 <body>
 <div id="login-form">
   <div id="login-title">Log into Select Shop</div>
-  <button id="login-kakao-btn" onclick="location.href='https://kauth.kakao.com/oauth/authorize?client_id=e6b3946cda0f744a73cbbb4de2be3732&redirect_uri=http://localhost:8080/user/kakao/callback&response_type=code'">
+  <button id="login-kakao-btn" onclick="location.href='https://kauth.kakao.com/oauth/authorize?client_id=87be44e094740b7d57519298d1554a37&redirect_uri=http://localhost:8080/user/kakao/callback&response_type=code'">
     카카오로 로그인하기
   </button>
   <button id="login-id-btn" onclick="location.href='/user/signup'">
@@ -28,8 +28,10 @@
     <div class="login-id-label">비밀번호</div>
     <input type="password" name="password" class="login-input-box">
 
+
     <button id="login-id-submit">로그인</button>
   </form>
+
   <div id="login-failed" style="display:none" class="alert alert-danger" role="alert">로그인에 실패하였습니다.</div>
 </div>
 </body>

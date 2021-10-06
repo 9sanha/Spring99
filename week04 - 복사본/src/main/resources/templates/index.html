@@ -1,68 +1,52 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=
-1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <meta property="og:title" content="00만의 셀렉샵">
-    <meta property="og:description" content="관심상품을 선택하고, 최저가 알림을 확인해보세요!">
-    <meta property="og:image" content="images/og_selectshop.png">
-    <link href="https://fonts.googleapis.com/css2?family=family=Nanum+Gothic&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="css/style.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="basic.js"></script>
-    <title>나만의 셀렉샵</title>
+
+    <!--부트스트랩-->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-/bQdsTh/da6pkI1MST/rWKFNjaCP5gBSY4sEBT38Q/9RBh9AH40zEOg7Hlq2THRZ" crossorigin="anonymous"></script>
+    <meta property="og:title" content="누추합니다">
+    <meta property="og:description" content="하지만 디자인 수정은 없다.">
+    <meta property="og:image" content="images/ogimage.png">
+    <meta charset="UTF-8">
+    <title>디자인 수정 요청 곤란합니다</title>
+    <script src="index.js"></script>
+    <link rel="stylesheet" href="../static/css/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic:wght@800&display=swap" rel="stylesheet">
 </head>
 <body>
-<div class="header" style="position:relative;">
-    <div id="header-title-login-user">
+<div class="container" >
+    <a href="index.html">
+        <div class="typing animate"></div>
+    </a>
+</div>
+<div class="wrap-box">
+    <div class="text-left" th:text="${username}" >님 어서오심셔</div>
+    <button type="button" class="text-right-mb-1 btn btn-secondary" onclick="postingDisplay()">글쓰기</button>
+    <button type="button" class="text-right-mb-1 btn btn-secondary" onclick="location.href='/user/login'">로그인</button>
+</div>
+<div class="wrap-card-box">
 
-        <span th:text="${username}"></span> 님의
-    </div>
-    <div id="header-title-select-shop">
-        Select Shop
-    </div>
-    <form id="my_form" method="post" action="/user/logout">
-        <a id="logout-text" href="javascript:{}" onclick="document.getElementById('my_form').submit();">로그아웃
-        </a>
-    </form>
-</div>
-<div class="nav">
-    <div class="nav-see active">
-        모아보기
-    </div>
-    <div class="nav-search">
-        탐색하기
-    </div>
-</div>
-<div id="see-area">
-    <div id="product-container">
-    </div>
-</div>
-<div id="search-area">
-    <div>
-        <input type="text" id="query">
-        <!-- <img src="images/icon-search.png" alt="">-->
-    </div>
-    <div id="search-result-box">
-    </div>
-    <div id="container" class="popup-container">
-        <div class="popup">
-            <button id="close" class="close">
-                X
-            </button>
-            <h1>⏰최저가 설정하기</h1>
-            <p>최저가를 설정해두면 선택하신 상품의 최저가가 떴을 때<br/> 표시해드려요!</p>
-            <div>
-                <input type="text" id="myprice" placeholder="200,000">원
-            </div>
-            <button class="cta" onclick="setMyprice()">설정하기</button>
+    <!--    인풋-->
+    <div id = "posting-box" class="row g-2 card-container hide">
+        <p>게시글 작성</p>
+        <div class="col-sm-9">
+            <input id="title" type="text" class="form-control" placeholder="제목" aria-label="제목">
         </div>
+        <div class="form-floating">
+            <textarea id="contents" class="form-control" placeholder="Leave a comment here"  style="height: 100px"></textarea>
+            <label for="contents">게시글</label>
+        </div>
+
+        <button type="button" class="my-btn btn btn-outline-secondary" onclick="saveMyPosting()">저장</button>
     </div>
-<!--  admin_role이 있는 경우에만 실행하겠땅  -->
+    <div id="card-box" class="card-container">
+        <!--작성된 게시글 붙는 곳-->
+    </div>
 </div>
-<div th:if = "${admin_role}" id = "admin"></div>
+
 </body>
 </html>
