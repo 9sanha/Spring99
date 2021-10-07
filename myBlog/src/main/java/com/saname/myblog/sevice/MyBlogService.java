@@ -1,6 +1,6 @@
 package com.saname.myblog.sevice;
 
-<<<<<<< HEAD
+
 import com.saname.myblog.dto.MyBlogDto;
 import com.saname.myblog.repository.MyBlogRepository;
 
@@ -36,7 +36,5 @@ public class MyBlogService {
         return true;
     }
 }
-=======
-public class MyBlogService {
-}
->>>>>>> parent of f698acd (update myBlog project)
+
+

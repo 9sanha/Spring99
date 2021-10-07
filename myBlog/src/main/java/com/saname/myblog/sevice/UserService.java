@@ -27,7 +27,7 @@ public class UserService {
     public User registerUser(SignupRequestDto requestDto) {
 //        System.out.println("Userservice l.26");
         // 회원 ID 중복 확인
-        String username = requestDto.getUsername();
+        String username = requestDto.getNickname();
         Optional<User> found = userRepository.findByUsername(username);
         if (found.isPresent()) {
             throw new IllegalArgumentException("중복된 사용자 ID 가 존재합니다.");
@@ -39,7 +39,7 @@ public class UserService {
 
         // 사용자 ROLE 확인
         UserRoleEnum role = UserRoleEnum.USER;
-        if (requestDto.isAdmin()) {
+        if (requestDto.()) {
             if (!requestDto.getAdminToken().equals(ADMIN_TOKEN)) {
                 throw new IllegalArgumentException("관리자 암호가 틀려 등록이 불가능합니다.");
             }
