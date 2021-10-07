@@ -17,7 +17,6 @@ import java.util.stream.Collectors;
 public class MyBlogRestController {
 
     private final MyBlogRepository myBlogRepository;
-    private final MyBlogService myBlogService;
 
 
     @GetMapping("/api/post")
@@ -34,14 +33,12 @@ public class MyBlogRestController {
 
 
     @PostMapping("/api/post")
-    public Boolean savePost(@RequestBody MyBlogDto requestDto){ //뇌피셜
-        if(myBlogService.filter(requestDto)){
-            MyBlog myBlog = new MyBlog(requestDto);
-            myBlogRepository.save(myBlog);
-            return true;
-        }else {
-            return false;
-        }
+    public Long savePost(@RequestBody MyBlogDto requestDto){ //뇌피셜
+
+        MyBlog myBlog = new MyBlog(requestDto);
+        myBlogRepository.save(myBlog);
+        System.out.println(myBlog.getContents());
+        return myBlog.getId();
     }
 
     @GetMapping("/api/detail/{id}")
