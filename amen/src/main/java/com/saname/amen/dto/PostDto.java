@@ -13,6 +13,7 @@ public class PostDto {
     String title;
     String contents;
 
+
     public PostDto(Post post) {
 
         this.title= post.getTitle();

@@ -1,5 +1,6 @@
 package com.saname.amen.model;
 
+import com.saname.amen.dto.SignupDto;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -23,11 +24,26 @@ public class User extends Timestamped{
     @Column(nullable = false)
     private String email;
 
-    @Column(nullable = false, unique = true)
+    @Column(unique = true)
     private Long kakaoId;
 
-    @Column
-    private Enum role;
+    public User(SignupDto signupDto,String pe) {
+        this.email=signupDto.getEmail();
+        this.username=signupDto.getUsername();
+        this.password=pe;
 
 
+
+    }
+
+    public User(String username, String email, String encodedPassword, Long kakaoId) {
+        this.email = email;
+        this.password =encodedPassword;
+        this.username = username;
+        this.kakaoId=kakaoId;
+    }
+
+    public void setKakaoId(Long kakaoId) {
+        this.kakaoId=kakaoId;
+    }
 }

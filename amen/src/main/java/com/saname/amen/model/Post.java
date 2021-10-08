@@ -20,8 +20,8 @@ public class Post extends Timestamped{
     @Id
     private Long id;
 
-//    @Column(nullable = false, unique = true)
-//    private String username;
+    @Column(nullable = false)
+    private String username;
 
     @Column(nullable = false)
     private String title;
@@ -39,6 +39,13 @@ public class Post extends Timestamped{
         this.contents=postDto.getContents();
         this.title=postDto.getTitle();
     }
+
+    public Post(PostDto postDto, String username) {
+        this.contents=postDto.getContents();
+        this.title=postDto.getTitle();
+        this.username=username;
+    }
+
     public void addReply(Reply reply){
         this.reply.add(reply);
 

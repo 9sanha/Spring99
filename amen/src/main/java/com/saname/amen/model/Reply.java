@@ -18,8 +18,8 @@ public class Reply extends Timestamped{
     @Id
     private Long id;
 
-//    @Column(nullable = false, unique = true)
-//    private String username;
+    @Column(nullable = false)
+    private String username;
 
     @Column(nullable = false)
     private String contents;
@@ -31,9 +31,16 @@ public class Reply extends Timestamped{
     private Post post;
 
 
+
     public Reply(String contents, Post post){
         this.contents=contents;
         this.post=post;
 
+    }
+
+    public Reply(String contents, Post post, String username) {
+        this.contents=contents;
+        this.post=post;
+        this.username=username;
     }
 }

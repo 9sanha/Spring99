@@ -21,15 +21,22 @@ public class Postservice {
         this.replyRepository=replyRepository;
     }
 
-    @Transactional
-    public void saveRpl(Long postId, String contents){
-        Post post = postRepository.findById(postId)
-                .orElseThrow(()->new IllegalArgumentException("eeee"));
-        Reply reply = new Reply(contents,post);
-        post.addReply(reply);
-        replyRepository.save(reply);
 
+
+    @Transactional
+    public void deletePost(Long id){
+        Post post = postRepository.findById(id)
+                .orElseThrow(()->new IllegalArgumentException("ddddd"));
+        replyRepository.deleteAllByPost(post);
+        postRepository.delete(post);
 
     }
-
+    @Transactional
+    public void saveRpl(Long postId, String contents, String username) {
+        Post post = postRepository.findById(postId)
+                .orElseThrow(()->new IllegalArgumentException("eeee"));
+        Reply reply = new Reply(contents,post,username);
+        post.addReply(reply);
+        replyRepository.save(reply);
+    }
 }
