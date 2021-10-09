@@ -22,15 +22,16 @@ public class Postservice {
     }
 
 
-
+    //포스트 삭제
     @Transactional
     public void deletePost(Long id){
         Post post = postRepository.findById(id)
                 .orElseThrow(()->new IllegalArgumentException("ddddd"));
         replyRepository.deleteAllByPost(post);
         postRepository.delete(post);
-
     }
+
+    // 댓글 저장
     @Transactional
     public void saveRpl(Long postId, String contents, String username) {
         Post post = postRepository.findById(postId)

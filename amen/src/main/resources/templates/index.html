@@ -166,7 +166,8 @@
                 contentType: "application/json",
                 data: JSON.stringify({title: title, contents: contents}),
                 success: function (response) {
-                    alert('가능')
+                    console.log(response)
+                    // alert('가능')
                     $('#container').addClass('active');
                     $(".hide").css("display", "none")
                     window.location.reload()
@@ -177,6 +178,8 @@
 
 
         function deletePost(id){
+
+
             let result = confirm('삭제함')
             if (result){$.ajax({
                 type: "DELETE",
@@ -189,6 +192,9 @@
 
 
         }
+
+
+
 
         function deleteReply(replyId){
             let result = confirm('삭제함')
