@@ -20,7 +20,6 @@ public class Postservice {
     }
 
     //포스트 삭제
-    @Transactional
     public void deletePost(Long id){
         Post post = postRepository.findById(id)
                 .orElseThrow(()->new IllegalArgumentException("ddddd"));
@@ -34,9 +33,11 @@ public class Postservice {
         Post post = postRepository.findById(postId)
                 .orElseThrow(()->new IllegalArgumentException("eeee"));
         Reply reply = new Reply(contents,post,username);
+        // post에 reply 업데이트
         post.addReply(reply);
         replyRepository.save(reply);
     }
+
     // 댓글 업데이트
     @Transactional
     public void updateReply(ReplyDto replyDto) {
