@@ -6,10 +6,9 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 public class ReplyDto {
+    Long id;
 
     private String contents;
 
-    ReplyDto(String contents){
-        this.contents=contents;
-    }
+
 }

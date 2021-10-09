@@ -43,4 +43,8 @@ public class Reply extends Timestamped{
         this.post=post;
         this.username=username;
     }
+
+    public void updateContents(String contents) {
+        this.contents=contents;
+    }
 }

@@ -1,66 +1,121 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-
-<!--    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>-->
+    <!--    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>-->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <!--부트스트랩-->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-/bQdsTh/da6pkI1MST/rWKFNjaCP5gBSY4sEBT38Q/9RBh9AH40zEOg7Hlq2THRZ" crossorigin="anonymous"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-/bQdsTh/da6pkI1MST/rWKFNjaCP5gBSY4sEBT38Q/9RBh9AH40zEOg7Hlq2THRZ"
+            crossorigin="anonymous"></script>
     <meta property="og:title" content="누추합니다">
     <meta property="og:description" content="하지만 디자인 수정은 없다.">
     <meta property="og:image" content="images/ogimage.png">
     <meta charset="UTF-8">
     <title>Title</title>
-<!--    <script type="application/javascript" src="/js/in_dex.js"></script>-->
-
-
+    <!--    <script type="application/javascript" src="/js/in_dex.js"></script>-->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic:wght@800&display=swap" rel="stylesheet">
 
     <link rel="stylesheet" href="/css/style.css">
     <script>
-        // let user = [[${user}]]
+        let username;
 
+        //로딩시 실행
         $(document).ready(function () {
+            username=`[[${user}]]`
             getPostingList();
 
         });
 
+        //페이지 컨트롤
         function postingDisplay() {
+
             $(".hide").css("display", "block")
 
         }
 
+        // 댓글 저장 (POST)
+        function saveRpl(postId) {
 
+            let rpl = $('#rpl').val();
+
+            $.ajax({
+                type: "POST",
+                url: `post/detail/reply/${postId}`,
+                contentType: "application/json",
+                data: JSON.stringify({contents: rpl}),
+                success: function (response) {
+                    if (response===-1){
+                        alert("로그인이 필요합니다.")
+                    }else{
+                        alert("댓글이 저장되었습니다")
+                        detail(postId)
+                    }
+                    // 여기부터작성하면됨
+                }
+            })
+        }
+
+        //포스트 저장 (POST)
+        function saveMyPosting() {
+
+            //html 만들어야 함
+            let title = $('#title').val();
+            let contents = $('#contents').val();
+
+            console.log(title)
+
+            $.ajax({
+                type: "POST",
+                url: 'post',
+                contentType: "application/json",
+                data: JSON.stringify({title: title, contents: contents}),
+                success: function (response) {
+
+
+                    if (response === -1) {
+                        alert('불가능')
+                    } else {
+                        alert('게시물이 저장되었습니다.')
+                    }
+
+                    $('#container').addClass('active');
+                    $(".hide").css("display", "none")
+                    window.location.reload()
+                }
+            })
+        }
+
+        //포스트 리스트 가져오기 (GET)
         function getPostingList() {
+
             $.ajax({
                 type: 'GET',
                 url: '/post',
                 success: function (response) {
-                    console.log(response)
+
                     $('#card-box').empty();
 
                     for (let i = 0; i < response.length; i++) {
                         //console.log(response[i]);
                         let itemDto = response[i];
-                        let username = itemDto.username;
                         let year = itemDto.createdAt.substring(0, 4)
                         let month = itemDto.createdAt.substring(5, 7)
                         let day = itemDto.createdAt.substring(8, 10)
                         // let time = itemDto.createdAt.substring(11,)
-                        let tempHtml = addHTML(itemDto,year,month,day);
+                        let tempHtml = addHTML(itemDto, year, month, day);
 
                         $('#card-box').append(tempHtml)
                     }
-
                 }
             })
         }
 
-
-        function addHTML(itemDto,year,month,day) {
+        //포스트
+        function addHTML(itemDto, year, month, day) {
             return `<div class="card-header">
                     ${itemDto.username}
                 </div>
@@ -78,19 +133,26 @@
 
         }
 
-
+        //상세페이지 화면 (GET)
         function detail(id) {
+
             $('#card-box').empty();
+
             $.ajax({
                 type: 'GET',
                 url: `/post/detail/${id}`,
                 success: function (response) {
-                    console.log(response)
-                    let tempHtml = `<div class="card">
+
+
+                    let tempHtml;
+                    //로그인 안한 사용자와 본인이 아닌 사용자는 삭제버튼 안보여야 함
+                    if (response["username"]===username){
+
+                        tempHtml = `<div>
+<div class="card">
   <div id="deletePostA" class="card-header">
     <p>${response.username}</p>
     <a onclick="deletePost(${id})">삭제 </a>
-
   </div>
   <div class="card-body">
     <blockquote class="blockquote mb-0">
@@ -110,107 +172,116 @@
 </div>
 <ul id="reply-list-box" class="list-group list-group-flush">
   <li class="list-group-item">여기 밑으로 댓글 리스트 달려야 함</li>
-</ul>`
+</ul>
+</div>`
+
+                    }else{
+                        tempHtml = `<div>
+<div class="card">
+  <div id="deletePostA" class="card-header">
+    <p>${response.username}</p>
+  </div>
+  <div class="card-body">
+    <blockquote class="blockquote mb-0">
+      <p>${response.title}</p>
+      <p>${response.contents}</p>
+      <footer class="blockquote-footer">이 글은<cite title="Source Title">${response.createdAt}</cite>에 작성되었습니다.</footer>
+    </blockquote>
+    <button onclick="window.location.reload()" type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+  뒤로 가기
+</button>
+<div class="form-floating">
+  <input type="text" class="form-control" id="rpl" placeholder="reply">
+  <label for="floatingPassword">reply</label>
+  <button onclick="saveRpl(${id})" type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">댓글 작성</button>
+</div>
+  </div>
+</div>
+<ul id="reply-list-box" class="list-group list-group-flush">
+  <li class="list-group-item">여기 밑으로 댓글 리스트 달려야 함</li>
+</ul><
+</div>`
+                    }
                     $('#card-box').append(tempHtml);
 
-
-
-                    // 이 리스트 최신순으로 정렬해야 함
-                    let list=response["reply"]
-
-                    for (let j=0;j<list.length;j++){
-                        // if (user){
-                        //     if (user["id"]==id)
-                        // }
-                        let temp_detailHtml = `<li class="list-group-item">${list[j]["contents"]}<a onclick="deleteReply(${list[j]["id"]})">삭제 </a></li>`
+                    let list = response["reply"]
+                    let temp_detailHtml;
+                    for (let j = 0; j < list.length; j++) {
+                        if (list[j]["username"]===username){temp_detailHtml = `<li class="list-group-item">${list[j]["contents"]}<a onclick="deleteReply(${list[j]["id"]})">삭제 </a>
+                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal${list[j]["id"]}">수정</button>
+<!-- Modal -->
+<div class="modal fade" id="exampleModal${list[j]["id"]}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel${list[j]["id"]}">Modal title</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <textarea  class="form-control" id="recipient-name${list[j]["id"]}"></textarea>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
+                <button type="button" class="btn btn-primary" onclick="updateReply(${list[j]["id"]})">댓글 수정</button>
+            </div>
+        </div>
+    </div>
+</div></li>`
+                        }
+                        else{temp_detailHtml = `<li class="list-group-item">${list[j]["contents"]}</li>`}
                         $('#reply-list-box').append(temp_detailHtml);
                     }
                 }
             })
         }
 
-        function addReply(){
-            // let list=response.reply
-            // for (let j=0;j<list.length;j++){
-            //     let temp_detailHtml = `<li class="list-group-item">${list[j].contents}</li>`
-            //     $('reply-list-box').append(temp_detailHtml);
-            // }
-
-        }
-
-        function saveRpl(postId){
-
-            let rpl = $('#rpl').val();
+        // 댓글 업데이트
+        function updateReply(id){
+            let contents = $(`#recipient-name${id}`).val()
+            console.log(contents)
             $.ajax({
-                type: "POST",
-                url: `post/detail/reply/${postId}`,
+                type: "PUT",
+                url: '/post/update',
                 contentType: "application/json",
-                data: JSON.stringify({contents: rpl}),
+                data: JSON.stringify({id: id, contents: contents}),
                 success: function (response) {
-                    detail(postId)
-                    // 여기부터작성하면됨
+                    alert("댓글이 수정되었습니다.")
+                    window.location.reload()
                 }
             })
         }
 
-        function saveMyPosting() {
-            //html 만들어야 함
-            let title = $('#title').val();
-            let contents = $('#contents').val();
-            console.log(title)
-            // let nickname = $('#nickname').val();
-            // console.log(nickname)
-            $.ajax({
-                type: "POST",
-                url: 'post',
-                contentType: "application/json",
-                data: JSON.stringify({title: title, contents: contents}),
-                success: function (response) {
-                    console.log(response)
-                    // alert('가능')
-                    $('#container').addClass('active');
-                    $(".hide").css("display", "none")
-                    window.location.reload()
-                }
-            })
-
-        }
-
-
-        function deletePost(id){
-
+        //포스트 삭제 (DELETE)
+        function deletePost(id) {
 
             let result = confirm('삭제함')
-            if (result){$.ajax({
-                type: "DELETE",
-                url: '/post/delete?id='+id,
-                success: function (response) {
+            if (result) {
+                $.ajax({
+                    type: "DELETE",
+                    url: '/post/delete?id=' + id,
+                    success: function (response) {
 
-                    window.location.reload()
-                }
-            })}
-
-
+                        window.location.reload()
+                    }
+                })
+            }
         }
 
-
-
-
-        function deleteReply(replyId){
+        //댓글 삭제 (DELETE)
+        function deleteReply(replyId) {
             let result = confirm('삭제함')
-            if (result){$.ajax({
-                type: "DELETE",
-                url: `/post/delete/${replyId}`,
-                success: function (response) {
+            if (result) {
+                $.ajax({
+                    type: "DELETE",
+                    url: `/post/delete/${replyId}`,
+                    success: function (response) {
+                        detail(response)
 
-                    window.location.reload()
-                }
-            })}
+                    }
+                })
+            }
 
         }
-
-
-
 
     </script>
 
@@ -218,45 +289,41 @@
 <body>
 <div class="container">
     <div class="typing animate"></div>
-
-
 </div>
 <div class="wrap-box">
     <!--        <div class="text-left" th:text="${username}" >님 어서오심셔</div>-->
     <div class="text-left"></div>
     <button type="button" class="text-right-mb-1 btn btn-secondary" onclick="postingDisplay()">글쓰기</button>
-    <button type="button" class="text-right-mb-1 btn btn-secondary" th:unless="${#authorization.expr('isAuthenticated()')}" onclick="location.href='/user/login'">로그인</button>
-     <button type="button" class="text-right-mb-1 btn btn-secondary"  th:if="${#authorization.expr('isAuthenticated()')}" onclick="location.href='/user/logout'">로그아웃</button>
+    <button type="button" class="text-right-mb-1 btn btn-secondary"
+            th:unless="${#authorization.expr('isAuthenticated()')}" onclick="location.href='/user/login'">로그인
+    </button>
+    <button type="button" class="text-right-mb-1 btn btn-secondary" th:if="${#authorization.expr('isAuthenticated()')}"
+            onclick="location.href='/user/logout'">로그아웃
+    </button>
 </div>
-
-
 <div class="wrap-card-box">
-
 </div>
 <div class="wrap-card-box">
-
-
     <!--    인풋-->
-    <div id = "posting-box" class="row g-2 card-container hide">
+    <div id="posting-box" class="row g-2 card-container hide">
         <p>게시글 작성</p>
         <div class="col-sm-9">
             <input id="title" type="text" class="form-control" placeholder="제목" aria-label="제목">
         </div>
-
         <div class="form-floating">
-            <textarea id="contents" class="form-control" placeholder="Leave a comment here"  style="height: 100px"></textarea>
+            <textarea id="contents" class="form-control" placeholder="Leave a comment here"
+                      style="height: 100px"></textarea>
             <label for="contents">게시글</label>
         </div>
-
-
         <button type="button" class="my-btn btn btn-outline-secondary" onclick="saveMyPosting()">저장</button>
     </div>
-
-
     <div id="card-box" class="card-container">
         <!--작성된 게시글 붙는 곳-->
     </div>
 </div>
+
+
+<!-- Button trigger modal -->
 
 </body>
 </html>

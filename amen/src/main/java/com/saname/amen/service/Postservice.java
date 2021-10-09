@@ -1,14 +1,12 @@
 package com.saname.amen.service;
 
+import com.saname.amen.dto.ReplyDto;
 import com.saname.amen.model.Post;
 import com.saname.amen.model.Reply;
 import com.saname.amen.repository.PostRepository;
 import com.saname.amen.repository.ReplyRepository;
 import org.springframework.stereotype.Service;
-
-import javax.swing.text.StringContent;
 import javax.transaction.Transactional;
-import java.util.List;
 
 @Service
 public class Postservice {
@@ -20,7 +18,6 @@ public class Postservice {
         this.postRepository=postRepository;
         this.replyRepository=replyRepository;
     }
-
 
     //포스트 삭제
     @Transactional
@@ -39,5 +36,12 @@ public class Postservice {
         Reply reply = new Reply(contents,post,username);
         post.addReply(reply);
         replyRepository.save(reply);
+    }
+    // 댓글 업데이트
+    @Transactional
+    public void updateReply(ReplyDto replyDto) {
+        Reply reply = replyRepository.findById(replyDto.getId())
+                .orElseThrow(()->new IllegalArgumentException("d"));
+        reply.updateContents(replyDto.getContents());
     }
 }
