@@ -30,9 +30,12 @@ public class Postservice {
     // 댓글 저장
     @Transactional
     public void saveRpl(Long postId, String contents, String username) {
+
         Post post = postRepository.findById(postId)
-                .orElseThrow(()->new IllegalArgumentException("eeee"));
+                .orElseThrow(()->new IllegalArgumentException("해당 포스트를 찾을 수 없습니다."));
+
         Reply reply = new Reply(contents,post,username);
+
         // post에 reply 업데이트
         post.addReply(reply);
         replyRepository.save(reply);

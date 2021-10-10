@@ -34,12 +34,6 @@ public class Post extends Timestamped{
     @Column(unique = true)
     private final List<Reply>  reply = new ArrayList<>();
 
-    public Post(PostDto postDto){
-//        this.username="아멘";
-        this.contents=postDto.getContents();
-        this.title=postDto.getTitle();
-    }
-
     public Post(PostDto postDto, String username) {
         this.contents=postDto.getContents();
         this.title=postDto.getTitle();

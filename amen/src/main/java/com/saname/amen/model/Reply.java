@@ -30,8 +30,6 @@ public class Reply extends Timestamped{
     @JoinColumn( name = "post_Id")
     private Post post;
 
-
-
     public Reply(String contents, Post post){
         this.contents=contents;
         this.post=post;
