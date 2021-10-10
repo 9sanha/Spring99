@@ -25,7 +25,9 @@
 
         //로딩시 실행
         $(document).ready(function () {
+            //model에 있응 username 값 저장
             username=`[[${user}]]`
+            // 로드할 때 마다 post리스트 보여주는 함수 실행
             getPostingList();
 
         });
@@ -39,46 +41,48 @@
 
         // 댓글 저장 (POST)
         function saveRpl(postId) {
-
+            //댓글 작성란에 있는 값 가져와서 저장
             let rpl = $('#rpl').val();
 
-            $.ajax({
+
+           $.ajax({
                 type: "POST",
+               //댓글이 달린 post의 id값을 path에 넣어서 보냄
                 url: `post/detail/reply/${postId}`,
                 contentType: "application/json",
+               //작성한 댓글을 {contents:댓글}로 담아서 body에 넣어서 보냄
                 data: JSON.stringify({contents: rpl}),
                 success: function (response) {
-                    if (response===-1){
+                    if (response===-1){ // response에 -1이 있다면 비로그인 상태
                         alert("로그인이 필요합니다.")
                     }else{
+                        //아니라면 댓글을 저장했다는 alert을 띄움
                         alert("댓글이 저장되었습니다")
+                        //detail 화면 로드
                         detail(postId)
                     }
-                    // 여기부터작성하면됨
                 }
             })
         }
 
-        //포스트 저장 (POST)
+        // 포스트 저장 (POST)
         function saveMyPosting() {
 
-            //html 만들어야 함
+            // 작성한 게시물의 제목과 내용을 변수에 저장
             let title = $('#title').val();
             let contents = $('#contents').val();
-
-            console.log(title)
 
             $.ajax({
                 type: "POST",
                 url: 'post',
                 contentType: "application/json",
+                // 게시물의 제목과 내용을 {title: 제목, contents: 내용} 형식으로 서버에 보냄
                 data: JSON.stringify({title: title, contents: contents}),
                 success: function (response) {
 
-
-                    if (response === -1) {
+                    if (response === -1) {// 게시물 작성 요청시 로그인 정보가 없을 때
                         alert('불가능')
-                    } else {
+                    } else {//저장 성공시 게시물이 저장되었다는 alert 띄움
                         alert('게시물이 저장되었습니다.')
                     }
 
@@ -95,17 +99,22 @@
             $.ajax({
                 type: 'GET',
                 url: '/post',
-                success: function (response) {
+                success: function (response) { //response에 post 리스트가 들어있음
 
                     $('#card-box').empty();
 
+                    //게시물을 for문으로 하나씩 받아서 출력
                     for (let i = 0; i < response.length; i++) {
-                        //console.log(response[i]);
+
                         let itemDto = response[i];
+
+                        // 작성날짜를 가공해서 각각 변수에 저장
                         let year = itemDto.createdAt.substring(0, 4)
                         let month = itemDto.createdAt.substring(5, 7)
                         let day = itemDto.createdAt.substring(8, 10)
                         // let time = itemDto.createdAt.substring(11,)
+
+                        //게시글 정보와 가공한 작성날짜를 addHTML의 인자로 넣어서 함수 호출
                         let tempHtml = addHTML(itemDto, year, month, day);
 
                         $('#card-box').append(tempHtml)
@@ -114,7 +123,7 @@
             })
         }
 
-        //포스트
+        //게시물 HTML
         function addHTML(itemDto, year, month, day) {
             return `<div class="card-header">
                     ${itemDto.username}
@@ -143,102 +152,109 @@
                 url: `/post/detail/${id}`,
                 success: function (response) {
 
-
                     let tempHtml;
-                    //로그인 안한 사용자와 본인이 아닌 사용자는 삭제버튼 안보여야 함
+                    //비로그인 사용자와 본인이 아닌 사용자는 삭제버튼 안보여야 함
                     if (response["username"]===username){
-
+                        //삭제버튼이 있는 스크립트
                         tempHtml = `<div>
-<div class="card">
-  <div id="deletePostA" class="card-header">
-    <p>${response.username}</p>
-    <a onclick="deletePost(${id})">삭제 </a>
-  </div>
-  <div class="card-body">
-    <blockquote class="blockquote mb-0">
-      <p>${response.title}</p>
-      <p>${response.contents}</p>
-      <footer class="blockquote-footer">이 글은<cite title="Source Title">${response.createdAt}</cite>에 작성되었습니다.</footer>
-    </blockquote>
-    <button onclick="window.location.reload()" type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
-  뒤로 가기
-</button>
-<div class="form-floating">
-  <input type="text" class="form-control" id="rpl" placeholder="reply">
-  <label for="floatingPassword">reply</label>
-  <button onclick="saveRpl(${id})" type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">댓글 작성</button>
-</div>
-  </div>
-</div>
-<ul id="reply-list-box" class="list-group list-group-flush">
-  <li class="list-group-item">여기 밑으로 댓글 리스트 달려야 함</li>
-</ul>
-</div>`
-
-                    }else{
-                        tempHtml = `<div>
-<div class="card">
-  <div id="deletePostA" class="card-header">
-    <p>${response.username}</p>
-  </div>
-  <div class="card-body">
-    <blockquote class="blockquote mb-0">
-      <p>${response.title}</p>
-      <p>${response.contents}</p>
-      <footer class="blockquote-footer">이 글은<cite title="Source Title">${response.createdAt}</cite>에 작성되었습니다.</footer>
-    </blockquote>
-    <button onclick="window.location.reload()" type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
-  뒤로 가기
-</button>
-<div class="form-floating">
-  <input type="text" class="form-control" id="rpl" placeholder="reply">
-  <label for="floatingPassword">reply</label>
-  <button onclick="saveRpl(${id})" type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">댓글 작성</button>
-</div>
-  </div>
-</div>
-<ul id="reply-list-box" class="list-group list-group-flush">
-  <li class="list-group-item">여기 밑으로 댓글 리스트 달려야 함</li>
-</ul><
-</div>`
+                                        <div class="card">
+                                            <div id="deletePostA" class="card-header">
+                                                <p>${response.username}</p>
+                                                <a onclick="deletePost(${id})">삭제 </a>
+                                            </div>
+                                            <div class="card-body">
+                                                <blockquote class="blockquote mb-0">
+                                                    <p>${response.title}</p>
+                                                    <p>${response.contents}</p>
+                                                    <footer class="blockquote-footer">이 글은<cite title="Source Title">${response.createdAt}</cite>에 작성되었습니다.</footer>
+                                                </blockquote>
+                                                <button onclick="window.location.reload()" type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">뒤로 가기</button>
+                                                <div class="form-floating">
+                                                    <input type="text" class="form-control" id="rpl" placeholder="reply">
+                                                    <label for="floatingPassword">reply</label>
+                                                    <button onclick="saveRpl(${id})" type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">댓글 작성</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <ul id="reply-list-box" class="list-group list-group-flush">
+                                            <li class="list-group-item">작성된 댓글</li>
+                                        </ul>
+                                    </div>`
                     }
-                    $('#card-box').append(tempHtml);
+                    else{
+                        //버튼없는 게시글 스크립트
+                        tempHtml = `<div>
+                                        <div class="card">
+                                            <div id="deletePostA" class="card-header">
+                                                <p>${response.username}</p>
+                                            </div>
+                                            <div class="card-body">
+                                                <blockquote class="blockquote mb-0">
+                                                    <p>${response.title}</p>
+                                                    <p>${response.contents}</p>
+                                                    <footer class="blockquote-footer">이 글은<cite title="Source Title">${response.createdAt}</cite>에 작성되었습니다.</footer>
+                                                </blockquote>
+                                                <button onclick="window.location.reload()" type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">뒤로 가기</button>
+                                                <div class="form-floating">
+                                                    <input type="text" class="form-control" id="rpl" placeholder="reply">
+                                                    <label for="floatingPassword">reply</label>
+                                                    <button onclick="saveRpl(${id})" type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">댓글 작성</button>
+                                                </div>
+                                             </div>
+                                        </div>
+                                            <ul id="reply-list-box" class="list-group list-group-flush">
+                                                <li class="list-group-item">작성된 댓글</li>
+                                            </ul>
+                                    </div>`
+                    }
 
+                    $('#card-box').append(tempHtml);
+                    //응답받은 포스트의 댓글 리스트를 list에 저장
                     let list = response["reply"]
-                    let temp_detailHtml;
+
+                    //반복문으로 유저정보 여부에 따라 댓글 띄움
                     for (let j = 0; j < list.length; j++) {
-                        if (list[j]["username"]===username){temp_detailHtml = `<li class="list-group-item">${list[j]["contents"]}<a onclick="deleteReply(${list[j]["id"]})">삭제 </a>
-                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal${list[j]["id"]}">수정</button>
-<!-- Modal -->
-<div class="modal fade" id="exampleModal${list[j]["id"]}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel${list[j]["id"]}">Modal title</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <textarea  class="form-control" id="recipient-name${list[j]["id"]}"></textarea>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
-                <button type="button" class="btn btn-primary" onclick="updateReply(${list[j]["id"]})">댓글 수정</button>
-            </div>
-        </div>
-    </div>
-</div></li>`
-                        }
-                        else{temp_detailHtml = `<li class="list-group-item">${list[j]["contents"]}</li>`}
-                        $('#reply-list-box').append(temp_detailHtml);
+                        $('#reply-list-box').append(addReplyHTML(list[j]));
                     }
                 }
             })
         }
 
+        //댓글 HTML
+        function addReplyHTML(reply){
+            let temp_detailHtml;
+            if (reply["username"]===username){temp_detailHtml = `
+                                    <li class="list-group-item">${reply["contents"]}<a onclick="deleteReply(${reply["id"]})">삭제 </a>
+                                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal${reply["id"]}">수정</button>
+                                        <div class="modal fade" id="exampleModal${reply["id"]}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title" id="exampleModalLabel${reply["id"]}">댓글 수정</h5>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <textarea  class="form-control" id="recipient-name${reply["id"]}"></textarea>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
+                                                        <button type="button" class="btn btn-primary" onclick="updateReply(${reply["id"]})">수정</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </li>`
+            }
+            else{temp_detailHtml = `<li class="list-group-item">${reply["contents"]}</li>`}
+            return temp_detailHtml;
+
+        }
+
         // 댓글 업데이트
         function updateReply(id){
+            //모달에 작성된 수정 댓글 값을 저장
             let contents = $(`#recipient-name${id}`).val()
-            console.log(contents)
+
             $.ajax({
                 type: "PUT",
                 url: '/post/update',
@@ -253,14 +269,13 @@
 
         //포스트 삭제 (DELETE)
         function deletePost(id) {
-
-            let result = confirm('삭제함')
+            let result = confirm('게시물을 삭제하겠습니까?')
             if (result) {
                 $.ajax({
                     type: "DELETE",
                     url: '/post/delete?id=' + id,
                     success: function (response) {
-
+                        alert("게시글이 삭제되었습니다.")
                         window.location.reload()
                     }
                 })
@@ -269,22 +284,20 @@
 
         //댓글 삭제 (DELETE)
         function deleteReply(replyId) {
-            let result = confirm('삭제함')
+            let result = confirm('댓글을 삭제하겠습니까?')
             if (result) {
                 $.ajax({
                     type: "DELETE",
                     url: `/post/delete/${replyId}`,
                     success: function (response) {
+                        alert("댓글이 삭제되었습니다.")
                         detail(response)
-
                     }
                 })
             }
-
         }
 
     </script>
-
 </head>
 <body>
 <div class="container">
