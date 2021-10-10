@@ -38,6 +38,7 @@ public class Postservice {
 
         // post에 reply 업데이트
         post.addReply(reply);
+
         replyRepository.save(reply);
     }
 
