@@ -28,7 +28,7 @@ public class PostRestController {
         this.postservice = postservice;
     }
 
-    //작성된 포스트 리스트 전달
+    //작성된 게시글 리스트 전달
     @GetMapping("/post")
     public List<Post> getPostList(){
         return postRepository.findAllByOrderByCreatedAtDesc();
@@ -37,9 +37,11 @@ public class PostRestController {
     // 포스트 작성 (POST) -id - contents title
     @PostMapping("/post")
     public Long savePost(@RequestBody PostDto postDto,@AuthenticationPrincipal UserDetailsImpl userDetails){
+
+        // 유저 정보가 없을 때
         if (userDetails == null){
             return -1L;
-//            throw new CustomErrorException("로그인하십쇼");
+            //throw new CustomErrorException("로그인하십쇼");
         }else {
             String username = userDetails.getUsername();
             Post post = new Post(postDto,username);
@@ -53,7 +55,7 @@ public class PostRestController {
     public Long saveReply(@PathVariable Long postId, @RequestBody ReplyDto replyDto,@AuthenticationPrincipal UserDetailsImpl userDetails){
         if (userDetails==null){
             return -1L;
-//            throw new CustomErrorException("로그인하십쇼");
+            //throw new CustomErrorException("로그인하십쇼");
         }else{
             postservice.saveRpl(postId,replyDto.getContents(),userDetails.getUsername());
             return postId;

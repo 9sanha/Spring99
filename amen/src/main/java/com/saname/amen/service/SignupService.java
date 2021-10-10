@@ -21,7 +21,7 @@ public class SignupService {
         this.passwordEncoder=passwordEncoder;
     }
 
-    // 회원가입 시, 유효성 체크
+    // 에러이름 가공
     public Map<String, String> validateHandling(Errors errors) {
         Map<String, String> validatorResult = new HashMap<>();
 
@@ -34,31 +34,23 @@ public class SignupService {
 
     //username 중복 여부 체크
     public Boolean usernameCheck(String username){
-        System.out.println("2");
-        Map<String, String> validatorResult = new HashMap<>();
         User user = userRepository.findByUsername(username)
                 .orElse(null);
         return user != null;
     }
 
+    //password 확인 값 체크
     public Boolean pwCheck(String pw1,String pw2){
         return pw1.equals(pw2);
     }
 
-
-
-
-
-
     // 회원가입
     public void signUp(SignupDto signupDto) {
-
+        //password 암호화
         String pe=passwordEncoder.encode(signupDto.getPassword());
         User user = new User(signupDto,pe);
+        //회원가입 정보 저장
         userRepository.save(user);
-
-        // 회원 가입 비즈니스 로직 구현
     }
-
 
 }

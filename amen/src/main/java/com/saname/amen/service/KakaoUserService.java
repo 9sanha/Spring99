@@ -35,30 +35,28 @@ public class KakaoUserService {
     }
 
     public void kakaoLogin(String code) throws JsonProcessingException {
-// 1. "인가 코드"로 "액세스 토큰" 요청
+        // 1. "인가 코드"로 "액세스 토큰" 요청
         String accessToken = getAccessToken(code);
-// 2. "액세스 토큰"으로 "카카오 사용자 정보" 가져오기
+        // 2. "액세스 토큰"으로 "카카오 사용자 정보" 가져오기
         KakaoUserInfoDto kakaoUserInfo = getKakaoUserInfo(accessToken);
-        //-----------------여기부터 숙제 작성 -----------------------------
-
-// 3. "카카오 사용자 정보"로 필요시 회원가입
+        // 3. "카카오 사용자 정보"로 필요시 회원가입
         User kakaoUser = registerKakaoUserIfNeeded(kakaoUserInfo);
-// 4. 강제 로그인 처리
+        // 4. 강제 로그인 처리
         forceLogin(kakaoUser);
     }
 
 
     private String getAccessToken(String code) throws JsonProcessingException {
-// HTTP Header 생성
+        // HTTP Header 생성
         HttpHeaders headers = new HttpHeaders();
         headers.add("Content-type", "application/x-www-form-urlencoded;charset=utf-8");
-// HTTP Body 생성
+        // HTTP Body 생성
         MultiValueMap<String, String> body = new LinkedMultiValueMap<>();
         body.add("grant_type", "authorization_code");
         body.add("client_id", "e6b3946cda0f744a73cbbb4de2be3732");
         body.add("redirect_uri", "http://localhost:8080/user/kakao/callback");
         body.add("code", code);
-// HTTP 요청 보내기
+        // HTTP 요청 보내기
         HttpEntity<MultiValueMap<String, String>> kakaoTokenRequest =
                 new HttpEntity<>(body, headers);
         RestTemplate rt = new RestTemplate();
@@ -68,7 +66,7 @@ public class KakaoUserService {
                 kakaoTokenRequest,
                 String.class
         );
-// HTTP 응답 (JSON) -> 액세스 토큰 파싱
+        // HTTP 응답 (JSON) -> 액세스 토큰 파싱
         String responseBody = response.getBody();
         ObjectMapper objectMapper = new ObjectMapper();
         JsonNode jsonNode = objectMapper.readTree(responseBody);
@@ -76,11 +74,11 @@ public class KakaoUserService {
     }
 
     private KakaoUserInfoDto getKakaoUserInfo(String accessToken) throws JsonProcessingException {
-// HTTP Header 생성
+        // HTTP Header 생성
         HttpHeaders headers = new HttpHeaders();
         headers.add("Authorization", "Bearer " + accessToken);
         headers.add("Content-type", "application/x-www-form-urlencoded;charset=utf-8");
-// HTTP 요청 보내기
+        // HTTP 요청 보내기
         HttpEntity<MultiValueMap<String, String>> kakaoUserInfoRequest = new HttpEntity<>(headers);
         RestTemplate rt = new RestTemplate();
         ResponseEntity<String> response = rt.exchange(
@@ -101,7 +99,7 @@ public class KakaoUserService {
     }
 
     private User registerKakaoUserIfNeeded(KakaoUserInfoDto kakaoUserInfo) {
-// DB 에 중복된 Kakao Id 가 있는지 확인
+        // DB 에 중복된 Kakao Id 가 있는지 확인
         Long kakaoId = kakaoUserInfo.getId();
         String kakaoEmail = kakaoUserInfo.getEmail();
         User kakaoUser = userRepository.findByKakaoId(kakaoId)
@@ -118,8 +116,6 @@ public class KakaoUserService {
                 String encodedPassword = passwordEncoder.encode(password);
                 // email: kakao email
                 String email = kakaoUserInfo.getEmail();
-                // role: 일반 사용자
-
                 kakaoUser = new User(username, email,encodedPassword,kakaoId);
                 userRepository.save(kakaoUser);
             }else{

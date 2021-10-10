@@ -30,16 +30,17 @@ public class UserController {
         this.kakaoUserService = kakaoUserService;
     }
 
+    //인가코드 요청 후 callback url
     @GetMapping("/user/kakao/callback")
     public String kakaoLogin(@RequestParam String code) throws JsonProcessingException {
+        // 인가코드로 토큰 요청
         kakaoUserService.kakaoLogin(code);
         return "redirect:/";
     }
 
+    // @AuthenticationPrincipal ??????????????????????????????????????????????????????????
     @GetMapping("/user/login")
     public String loginHome(@AuthenticationPrincipal UserDetailsImpl userDetails){
-
-
         return "login";
     }
 
@@ -56,6 +57,7 @@ public class UserController {
 
         //username 중복검사
         Boolean isSameUsername = signupService.usernameCheck(signupDto.getUsername());
+
         if (isSameUsername|errors.hasErrors()|!isSamePw){
             Map<String, String> validatorResult=new HashMap<>();
             // 회원가입 실패시, 입력 데이터를 유지
@@ -74,12 +76,14 @@ public class UserController {
                 // 유효성 통과 못한 필드와 메시지를 핸들링
                 validatorResult.putAll(signupService.validateHandling(errors));
             }
+            // 발생한 오류 메시지르 {오류난곳:오류메시지} 형식으로 model에 저장
             for (String key : validatorResult.keySet()) {
+
                 model.addAttribute(key, validatorResult.get(key));
             }
             return "/signup";
         }
-
+        //회원가입 정보를 서비스에 전달
         signupService.signUp(signupDto);
         return "redirect:/user/login";
     }
