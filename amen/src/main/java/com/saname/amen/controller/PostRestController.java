@@ -52,7 +52,7 @@ public class PostRestController {
 
     //댓글 작성(POST) -id -post -rplContens
     @PostMapping("post/detail/reply/{postId}")// 댓글 입력한 사람 아이디 필요함
-    public Long saveReply(@PathVariable Long postId, @RequestBody ReplyDto replyDto,@AuthenticationPrincipal UserDetailsImpl userDetails){
+    public Long saveReply(@PathVariable Long postId, @RequestBody ReplyDto replyDto, @AuthenticationPrincipal UserDetailsImpl userDetails){
         if (userDetails==null){
             return -1L;
             //throw new CustomErrorException("로그인하십쇼");
