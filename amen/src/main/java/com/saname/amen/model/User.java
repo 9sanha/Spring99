@@ -25,25 +25,26 @@ public class User extends Timestamped{
     private String email;
 
     @Column(unique = true)
-    private Long kakaoId;
+    private Long snsId;
+
+
+
+
 
     public User(SignupDto signupDto,String pe) {
         this.email=signupDto.getEmail();
         this.username=signupDto.getUsername();
         this.password=pe;
-
-
-
     }
 
-    public User(String username, String email, String encodedPassword, Long kakaoId) {
+    public User(String username, String email, String encodedPassword, Long snsId) {
         this.email = email;
         this.password =encodedPassword;
         this.username = username;
-        this.kakaoId=kakaoId;
+        this.snsId = snsId;
     }
 
-    public void setKakaoId(Long kakaoId) {
-        this.kakaoId=kakaoId;
+    public void setSnsId(Long snsId) {
+        this.snsId =snsId;
     }
 }

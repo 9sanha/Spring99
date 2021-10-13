@@ -5,7 +5,7 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public class KakaoUserInfoDto {
+public class SnsUserInfoDto {
     private Long id;
     private String username;
     private String email;

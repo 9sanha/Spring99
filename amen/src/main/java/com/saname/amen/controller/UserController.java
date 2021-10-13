@@ -5,16 +5,15 @@ import com.saname.amen.dto.SignupDto;
 import com.saname.amen.security.UserDetailsImpl;
 import com.saname.amen.service.KakaoUserService;
 import com.saname.amen.service.SignupService;
-import lombok.Getter;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.Errors;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
-import javax.validation.Valid;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -87,5 +86,6 @@ public class UserController {
         signupService.signUp(signupDto);
         return "redirect:/user/login";
     }
+
 
 }
