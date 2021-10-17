@@ -31,7 +31,7 @@ public class SignupDto {
     private String passwordCheck;
 
 
-//    @Builder
+    @Builder
     public SignupDto(Long id, String username, String email, String password,String passwordCheck) {
         this.id = id;
         this.username = username;

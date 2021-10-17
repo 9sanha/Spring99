@@ -34,10 +34,10 @@ public class GithubUserService {
         this.passwordEncoder=passwordEncoder;
     }
 
+
     public void githubLogin(String code) throws JsonProcessingException {
         // 1. "인가 코드"로 "액세스 토큰" 요청
         String accessToken = getAccessToken(code);
-
         // 2. "액세스 토큰"으로 "카카오 사용자 정보" 가져오기
         SnsUserInfoDto githubUserInfo = getGithubUserInfo(accessToken);
 //        // 3. "카카오 사용자 정보"로 필요시 회원가입
@@ -58,8 +58,8 @@ public class GithubUserService {
 
         // HTTP Body 생성
         MultiValueMap<String, String> body = new LinkedMultiValueMap<>();
-        body.add("client_secret", "");
-        body.add("client_id", "");
+        body.add("client_secret", "a99165050efc281a096bf1f83172dfcc57d46aea");
+        body.add("client_id", "3ee861828ff47de6efe8");
         body.add("redirect_uri", "http://localhost:8080/user/github/callback");
         body.add("code", code);
 
@@ -80,11 +80,7 @@ public class GithubUserService {
         ObjectMapper objectMapper = new ObjectMapper();
         JsonNode jsonNode = objectMapper.readTree(responseBody);
 
-
-
-
         return jsonNode.get("access_token").asText();
-
 
     }
 
@@ -107,7 +103,7 @@ public class GithubUserService {
         System.out.println("responseBody = " + responseBody);
         ObjectMapper objectMapper = new ObjectMapper();
         JsonNode jsonNode = objectMapper.readTree(responseBody);
-        
+        System.out.println("jsonNode = " + jsonNode);
         Long id = jsonNode.get("id").asLong();
         String nickname = jsonNode.get("login").asText();
         String email = jsonNode.get("html_url").asText();
