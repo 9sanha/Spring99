@@ -27,10 +27,6 @@ public class User extends Timestamped{
     @Column(unique = true)
     private Long snsId;
 
-
-
-
-
     public User(SignupDto signupDto,String pe) {
         this.email=signupDto.getEmail();
         this.username=signupDto.getUsername();
